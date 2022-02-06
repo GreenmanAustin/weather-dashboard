@@ -6,7 +6,7 @@ In this project, I wrote HTML, CSS and JavaScript code to obtain current weather
 ## Deployment
 
 The Weather Dashboard has been deloyed and can be accessed here: 
-<a href="https://greenmanaustin.github.io/weather-dashboard/#weather-dashboard" target="_blank">https://greenmanaustin.github.io/weather-dashboard/#weather-dashboard</a>
+<a href="https://greenmanaustin.github.io/weather-dashboard/#weather-dashboard" target="_blank">Link to Website</a>
 
 
 
