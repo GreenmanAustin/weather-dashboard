@@ -27,8 +27,8 @@ var displayCurrentWeather = function (data) {
     currentHumidityEl.textContent = "Humidity: " + data.current.humidity + " %";
     var uv = document.getElementById("uv");
     uv.textContent = data.current.uvi;
-
-    // displayPriorSearches();
+    // calls the function to display the forecast for the current city
+    displayPriorSearches();
 }
 
 // Displays the forecast for the current city
