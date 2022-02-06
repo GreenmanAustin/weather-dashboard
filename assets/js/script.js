@@ -6,17 +6,16 @@ var lon = "";
 var inputFormEl = document.getElementById("input-form");
 var city = "";
 var today = moment().format('l');
-// var iconEl = document.getElementById("icon");
+var forecastContainerEl = document.getElementById("forecast-container");
+var priorSearches = [];
+var priorSearchesEl = document.getElementById("prior-searches")
 
 
 
 var displayCurrentWeather = function (data) {
     cityNameEl.textContent = city + " (" + today + ") ";
-    console.log(data);
     var iconcode = data.current.weather[0].icon;
-    console.log(iconcode);
     var iconUrl = "http://openweathermap.org/img/w/" + iconcode + ".png";
-    console.log(iconUrl);
     var iconEl = document.createElement("img");
     iconEl.setAttribute("src", iconUrl);
     cityNameEl.appendChild(iconEl);
@@ -28,11 +27,17 @@ var displayCurrentWeather = function (data) {
     currentHumidityEl.textContent = "Humidity: " + data.current.humidity + " %";
     var uv = document.getElementById("uv");
     uv.textContent = data.current.uvi;
+    displayPriorSearches();
 }
 
 var displayForcast = function (data) {
+    forecastContainerEl.textContent = "";
     for (var i = 0; i < 5; i++) {
-        var forecastEl = document.getElementById("forecast-" + (i + 1));
+        var forecastEl = document.createElement("div");
+        forecastEl.className += "col forecast";
+        if (i < 4) {
+            forecastEl.className += " mr-3";
+        }
         var day = document.createElement("div");
         day.className = "forecast-day";
         var newDate = moment().add(i + 1, 'days');
@@ -64,14 +69,7 @@ var displayForcast = function (data) {
         forecastHumidity.textContent = "Humidity: " + data.daily[i].humidity + " %";
         forecastEl.appendChild(forecastHumidity);
 
-
-
-
-
-
-
-
-
+        forecastContainerEl.appendChild(forecastEl);
     }
 
 }
@@ -79,8 +77,16 @@ var displayForcast = function (data) {
 
 var coordinates = function (event) {
     event.preventDefault();
-    console.log(today);
     city = inputEl.value.trim();
+    if (!city) {
+        return;
+    }
+    loadSearches();
+    if (!priorSearches.includes(city)) {
+        priorSearches.unshift(city);
+    }
+    saveSearches();
+
     var apiUrlGeoCode = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=0f495242c82beba70a7e55f7073bedf1";
     fetch(apiUrlGeoCode)
         .then(function (response) {
@@ -99,7 +105,42 @@ var coordinates = function (event) {
         .catch(function (err) {
             console.log("error: " + err);
         })
+    inputEl.value = "";
+
 };
+
+var loadSearches = function () {
+    priorSearches = JSON.parse(localStorage.getItem("priorSearches") || "[]");
+    if (priorSearches == null) { priorSearches = [] };
+    if (priorSearches.length > 8) {
+        priorSearches.pop();
+    }
+};
+
+var saveSearches = function () {
+    localStorage.setItem("priorSearches", JSON.stringify(priorSearches));
+}
+
+var displayPriorSearches = function () {
+    loadSearches();
+    priorSearchesEl.textContent = "";
+    for (var i = 0; i < priorSearches.length; i++) {
+        var searchBtn = document.createElement("button");
+        searchBtn.className += "btn-block prior-search-btn upper-case";
+        searchBtn.setAttribute("type", "button");
+        searchBtn.setAttribute("data-city", priorSearches[i]);
+        searchBtn.textContent = priorSearches[i];
+        priorSearchesEl.appendChild(searchBtn);
+    };
+}
+
+var searchBtnHandler = function (event) {
+    inputEl.value = event.target.textContent;
+    coordinates(event);
+    displayPriorSearches();
+
+
+}
 
 var getWeatherData = function (lat, lon) {
     var apiUrlWeather = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely,alerts&units=imperial&appid=0f495242c82beba70a7e55f7073bedf1"
@@ -121,10 +162,6 @@ var getWeatherData = function (lat, lon) {
         })
 };
 
-var printCity = function (event) {
-    event.preventDefault();
-    var city = inputEl.value.trim();
-    console.log(city);
-}
 
 inputFormEl.addEventListener("submit", coordinates);
+priorSearchesEl.addEventListener("click", searchBtnHandler)
