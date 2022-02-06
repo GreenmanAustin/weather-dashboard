@@ -11,7 +11,58 @@
 </head>
 
 <body>
+    <header class="bg-primary text-white font-weight-bold">
+        Weather
+        Dashboard
+    </header>
+    <div class="row p-3">
 
+        <div class="col left-side">
+            <form class="input-form" id="input-form">
+                <label for="city-search" class="search-heading display-5"> Search for a City:</label><br>
+                <input type="text" name="city-search" class="city-search mb-2" id="city-search"
+                    placeholder="City Name" /> <br>
+                <button type="submit" class="btn-primary btn-block search-button">Search</button>
+            </form>
+            <div class="prior-searches">
+
+            </div>
+        </div>
+
+
+        <div class="col-9 right-side">
+            <div class="current-weather pb-3">
+
+                <div id="city-name" class="city-name">City:</div>
+                <p class="current-info" id="current-temp">Temp:</p>
+                <p class="current-info" id="current-wind">Wind:</p>
+                <p class="current-info" id="current-hudmidity">Hudmidity:</p>
+                <p class="current-info" id="current-uv">UV Index:</p>
+                <div id="uv" class="uv"></div>
+            </div>
+            <h3 class="forecast-heading">5-Day forecast:</h3>
+            <div class="row forecast-container pl-3 pr-3">
+                <div class="col forecast mr-3" id="forecast-1">
+                </div>
+                <div class="col forecast mr-3" id="forecast-2">
+                </div>
+                <div class="col forecast mr-3" id="forecast-3">
+                </div>
+                <div class="col forecast mr-3" id="forecast-4">
+                </div>
+                <div class="col forecast" id="forecast-5">
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
+
 
 </html>
