@@ -15,7 +15,7 @@ var priorSearchesEl = document.getElementById("prior-searches")
 var displayCurrentWeather = function (data) {
     cityNameEl.textContent = city + " (" + today + ") ";
     var iconcode = data.current.weather[0].icon;
-    var iconUrl = "http://openweathermap.org/img/w/" + iconcode + ".png";
+    var iconUrl = "https://openweathermap.org/img/w/" + iconcode + ".png";
     var iconEl = document.createElement("img");
     iconEl.setAttribute("src", iconUrl);
     cityNameEl.appendChild(iconEl);
