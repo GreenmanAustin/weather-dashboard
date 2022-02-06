@@ -85,16 +85,17 @@ var coordinates = function (event) {
     if (!city) {
         return;
     }
-    loadSearches();
-    if (!priorSearches.includes(city)) {
-        priorSearches.unshift(city);
-    }
-    saveSearches();
+
 
     var apiUrlGeoCode = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=0f495242c82beba70a7e55f7073bedf1";
     fetch(apiUrlGeoCode)
         .then(function (response) {
             if (response.ok) {
+                loadSearches();
+                if (!priorSearches.includes(city)) {
+                    priorSearches.unshift(city);
+                }
+                saveSearches();
                 response.json()
                     .then(function (data) {
                         if (data.length !== 0) {
@@ -104,6 +105,8 @@ var coordinates = function (event) {
                         }
 
                     });
+            } else {
+                alert("Incorrect City Name, Try again");
             }
         })
         .catch(function (err) {
