@@ -50,7 +50,7 @@ var displayForcast = function (data) {
         // Add Icon
         var forecastIcon = document.createElement("img");
         forecastIcon.className = "forecast-icon";
-        forecastIcon.setAttribute("src", "http://openweathermap.org/img/w/" + data.daily[i].weather[0].icon + ".png");
+        forecastIcon.setAttribute("src", "https://openweathermap.org/img/w/" + data.daily[i].weather[0].icon + ".png");
         forecastEl.appendChild(forecastIcon);
 
         // Add Temp
