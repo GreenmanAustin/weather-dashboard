@@ -27,8 +27,8 @@ var displayCurrentWeather = function (data) {
     currentHumidityEl.textContent = "Humidity: " + data.current.humidity + " %";
     var uv = document.getElementById("uv");
     uv.textContent = data.current.uvi;
-    // calls the function to display the forecast for the current city
-    displayPriorSearches();
+
+    // displayPriorSearches();
 }
 
 // Displays the forecast for the current city
@@ -119,6 +119,7 @@ var coordinates = function (event) {
 var loadSearches = function () {
     priorSearches = JSON.parse(localStorage.getItem("priorSearches") || "[]");
     if (priorSearches == null) { priorSearches = [] };
+    // Limits search history to 8 hits
     if (priorSearches.length > 8) {
         priorSearches.pop();
     }
@@ -147,9 +148,6 @@ var displayPriorSearches = function () {
 var searchBtnHandler = function (event) {
     inputEl.value = event.target.textContent;
     coordinates(event);
-    displayPriorSearches();
-
-
 }
 // Obtains weather data for the city using coordinates obtained from another search.
 var getWeatherData = function (lat, lon) {
@@ -171,6 +169,9 @@ var getWeatherData = function (lat, lon) {
             console.log("error: " + err);
         })
 };
+
+// calls the function to display the forecast for the current city
+displayPriorSearches();
 
 // listens for the user's city input in the search bar
 inputFormEl.addEventListener("submit", coordinates);
