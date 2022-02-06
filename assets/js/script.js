@@ -11,7 +11,7 @@ var priorSearches = [];
 var priorSearchesEl = document.getElementById("prior-searches")
 
 
-
+// Displays the Current Weather Data for the Selected City
 var displayCurrentWeather = function (data) {
     cityNameEl.textContent = city + " (" + today + ") ";
     var iconcode = data.current.weather[0].icon;
@@ -27,9 +27,11 @@ var displayCurrentWeather = function (data) {
     currentHumidityEl.textContent = "Humidity: " + data.current.humidity + " %";
     var uv = document.getElementById("uv");
     uv.textContent = data.current.uvi;
+    // calls the function to display the forecast for the current city
     displayPriorSearches();
 }
 
+// Displays the forecast for the current city
 var displayForcast = function (data) {
     forecastContainerEl.textContent = "";
     for (var i = 0; i < 5; i++) {
@@ -69,12 +71,14 @@ var displayForcast = function (data) {
         forecastHumidity.textContent = "Humidity: " + data.daily[i].humidity + " %";
         forecastEl.appendChild(forecastHumidity);
 
+        // Appends the forecast for the particular date to the container for the 5-day forecast
+
         forecastContainerEl.appendChild(forecastEl);
     }
 
 }
 
-
+// Obtains the coodfinates using an API for the selected city and then send those coordinates as arguments to another function to get the weather data for that city
 var coordinates = function (event) {
     event.preventDefault();
     city = inputEl.value.trim();
@@ -105,10 +109,13 @@ var coordinates = function (event) {
         .catch(function (err) {
             console.log("error: " + err);
         })
+    // resets the value of the search input
     inputEl.value = "";
 
 };
 
+
+// Loads the prior searches from local storage into the priorSearches variable
 var loadSearches = function () {
     priorSearches = JSON.parse(localStorage.getItem("priorSearches") || "[]");
     if (priorSearches == null) { priorSearches = [] };
@@ -117,10 +124,12 @@ var loadSearches = function () {
     }
 };
 
+// Saves prior search data to local storage
 var saveSearches = function () {
     localStorage.setItem("priorSearches", JSON.stringify(priorSearches));
 }
 
+// Displays the prior searches as buttons underneath the search form
 var displayPriorSearches = function () {
     loadSearches();
     priorSearchesEl.textContent = "";
@@ -134,6 +143,7 @@ var displayPriorSearches = function () {
     };
 }
 
+// This is called when user clicks on prior search button.  This function causes the weather data to display for the prior-searched city.
 var searchBtnHandler = function (event) {
     inputEl.value = event.target.textContent;
     coordinates(event);
@@ -141,7 +151,7 @@ var searchBtnHandler = function (event) {
 
 
 }
-
+// Obtains weather data for the city using coordinates obtained from another search.
 var getWeatherData = function (lat, lon) {
     var apiUrlWeather = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely,alerts&units=imperial&appid=0f495242c82beba70a7e55f7073bedf1"
     fetch(apiUrlWeather)
@@ -162,6 +172,8 @@ var getWeatherData = function (lat, lon) {
         })
 };
 
-
+// listens for the user's city input in the search bar
 inputFormEl.addEventListener("submit", coordinates);
+
+// listens for the user to click a search history button
 priorSearchesEl.addEventListener("click", searchBtnHandler)
